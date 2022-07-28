@@ -24,11 +24,14 @@ const SettingsComponent: React.FC<SettingsComponentType> = () => {
         setStartV(+e.target.value)
         state.startValue = startV
     }
+    const setOptions = () => {
+
+    }
     return (
         <div className={'panelBlock'}>
             <div>max v: <input onChange={maxVFunction} value={maxV} className={'input'} type="number"/></div>
             <div>start v: <input onChange={startVFunction} value={startV} className={'input'} type="number"/></div>
-            <button className={'button'}>set</button>
+            <button onClick={setOptions} className={'button'}>set</button>
         </div>
     )
 }
