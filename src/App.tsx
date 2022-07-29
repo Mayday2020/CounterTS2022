@@ -18,14 +18,14 @@ const SettingsComponent: React.FC<SettingsComponentType> = () => {
     let [startV, setStartV] = useState(state.startValue)
     const maxVFunction = (e: ChangeEvent<HTMLInputElement>) => {
         setMaxV(+e.target.value)
-        state.maxValue = maxV
     }
     const startVFunction = (e: ChangeEvent<HTMLInputElement>) => {
         setStartV(+e.target.value)
-        state.startValue = startV
     }
     const setOptions = () => {
-
+        state.startValue = startV
+        state.currentValue = startV
+        state.maxValue = maxV
     }
     return (
         <div className={'panelBlock'}>
@@ -36,7 +36,7 @@ const SettingsComponent: React.FC<SettingsComponentType> = () => {
     )
 }
 const CounterComponent: React.FC<CounterComponentType> = () => {
-    let [num, setNum] = useState(state.startValue)
+    let [num, setNum] = useState(state.currentValue)
     const incrementFunction = () => {
         num !== state.maxValue && setNum(num + 1)
         state.currentValue = num
