@@ -2,52 +2,53 @@ import React, {ChangeEvent, useState} from 'react';
 import './App.css';
 
 type SettingsComponentType = {}
-type CounterComponentType = {}
+type CounterComponentType = {
+    state: StateType
+    dispatch: (state: StateType) => void
+}
 type StateType = {
     currentValue: number
     maxValue: number
     startValue: number
 }
-const state: StateType = {
-    currentValue: 0,
-    maxValue: 5,
-    startValue: 0
-}
+
 const SettingsComponent: React.FC<SettingsComponentType> = () => {
-    let [maxV, setMaxV] = useState(state.maxValue)
-    let [startV, setStartV] = useState(state.startValue)
+
+    //let [maxV, setMaxV] = useState(state.maxValue)
+    //let [startV, setStartV] = useState(state.startValue)
+
     const maxVFunction = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxV(+e.target.value)
     }
+
     const startVFunction = (e: ChangeEvent<HTMLInputElement>) => {
-        setStartV(+e.target.value)
     }
+
     const setOptions = () => {
-        state.startValue = startV
-        state.currentValue = startV
-        state.maxValue = maxV
     }
+
     return (
         <div className={'panelBlock'}>
-            <div>max v: <input onChange={maxVFunction} value={maxV} className={'input'} type="number"/></div>
-            <div>start v: <input onChange={startVFunction} value={startV} className={'input'} type="number"/></div>
+            <div>max v: <input onChange={maxVFunction} className={'input'} type="number"/></div>
+            <div>start v: <input onChange={startVFunction} className={'input'} type="number"/></div>
             <button onClick={setOptions} className={'button'}>set</button>
         </div>
     )
 }
-const CounterComponent: React.FC<CounterComponentType> = () => {
-    let [num, setNum] = useState(state.currentValue)
+const CounterComponent: React.FC<CounterComponentType> = (props) => {
+
     const incrementFunction = () => {
-        num !== state.maxValue && setNum(num + 1)
-        state.currentValue = num
+        let newState = {...props.state, currentValue: props.state.currentValue + 1}
+        props.dispatch(newState)
     }
+
     const resetFunction = () => {
-        setNum(state.startValue)
-        state.currentValue = state.startValue
+        let newState = {...props.state, currentValue: 0}
+        props.dispatch(newState)
     }
+
     return (
         <div className={'panelBlock'}>
-            <div className={num !== state.maxValue ? '' : 'maxValueColor'}>{num}</div>
+            <div className={''}>{props.state.currentValue}</div>
             <div>
                 <button onClick={incrementFunction} className={'button'}>inc</button>
                 <button onClick={resetFunction} className={'button'}>reset</button>
@@ -56,11 +57,18 @@ const CounterComponent: React.FC<CounterComponentType> = () => {
     )
 }
 const App = () => {
+    const state: StateType = {
+        currentValue: 0,
+        maxValue: 5,
+        startValue: 0
+    }
+    let [currentState, setCurrentState] = useState<StateType>(state)
+
     return (
         <div className={'wrapper'}>
             <div className="App">
                 <SettingsComponent/>
-                <CounterComponent/>
+                <CounterComponent state={currentState} dispatch={setCurrentState}/>
             </div>
         </div>
     );
