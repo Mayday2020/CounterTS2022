@@ -1,7 +1,10 @@
 import React, {ChangeEvent, useState} from 'react';
 import './App.css';
 
-type SettingsComponentType = {}
+type SettingsComponentType = {
+    state: StateType
+    dispatch: (state: StateType) => void
+}
 type CounterComponentType = {
     state: StateType
     dispatch: (state: StateType) => void
@@ -67,7 +70,7 @@ const App = () => {
     return (
         <div className={'wrapper'}>
             <div className="App">
-                <SettingsComponent/>
+                <SettingsComponent state={currentState} dispatch={setCurrentState}/>
                 <CounterComponent state={currentState} dispatch={setCurrentState}/>
             </div>
         </div>
