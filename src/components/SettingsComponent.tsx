@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, Dispatch, SetStateAction, useState} from "react";
 import {StateType} from "../App";
 import Button from "./ButtonComponent";
 
@@ -7,6 +7,7 @@ type SettingsComponentType = {
     dispatch: (state: StateType) => void
     disabledButton: (disabled: boolean) => void
     disabledSetButton: boolean
+    incorrectValue: Dispatch<SetStateAction<boolean>>
 }
 
 const SettingsComponent: React.FC<SettingsComponentType> = (props) => {
@@ -19,10 +20,12 @@ const SettingsComponent: React.FC<SettingsComponentType> = (props) => {
             e.currentTarget.style.backgroundColor = '#FFFFFF'
             props.disabledButton(false)
             setMaxV(+e.currentTarget.value)
+            props.incorrectValue(false)
         } else {
             e.currentTarget.style.backgroundColor = 'red'
             props.disabledButton(true)
             setMaxV(+e.currentTarget.value)
+            props.incorrectValue(true)
         }
     }
 
@@ -31,10 +34,12 @@ const SettingsComponent: React.FC<SettingsComponentType> = (props) => {
             e.currentTarget.style.backgroundColor = '#FFFFFF'
             setStartV(+e.currentTarget.value)
             props.disabledButton(false)
+            props.incorrectValue(false)
         } else {
             e.currentTarget.style.backgroundColor = 'red'
             setStartV(+e.currentTarget.value)
             props.disabledButton(true)
+            props.incorrectValue(true)
         }
 
     }

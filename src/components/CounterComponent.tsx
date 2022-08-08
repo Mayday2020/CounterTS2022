@@ -6,6 +6,7 @@ type CounterComponentType = {
     state: StateType
     dispatch: (state: StateType) => void
     disabledButton: boolean
+    incorrectValue: boolean
 }
 
 const CounterComponent: React.FC<CounterComponentType> = (props) => {
@@ -20,16 +21,24 @@ const CounterComponent: React.FC<CounterComponentType> = (props) => {
         props.dispatch(newState)
     }
 
+    let func = () => {
+        if (props.state.currentValue === props.state.maxValue || !props.disabledButton || props.incorrectValue) {
+            return true;
+        } else return false;
+    }
+    let dis = func()
     return (
         <div className={'panelBlock'}>
-            <div className={props.state.currentValue === props.state.maxValue ? 'maxValueColor' : ''}>
-                {!props.disabledButton ? 'press -set-' : props.state.currentValue}
+            <div className={props.state.currentValue === props.state.maxValue && props.disabledButton ? 'maxValueColor' : ''}>
+                {
+                    props.incorrectValue ? 'incorrect value' : (!props.disabledButton ? 'press -set-' : props.state.currentValue)
+                }
             </div>
             <div>
                 <Button buttonText={'inc'}
-                        disabled={props.state.currentValue === props.state.maxValue || !props.disabledButton}
+                        disabled={dis}
                         onclick={incrementFunction}/>
-                <Button buttonText={'reset'} disabled={!props.disabledButton} onclick={resetFunction}/>
+                <Button buttonText={'reset'} disabled={!props.disabledButton || dis} onclick={resetFunction}/>
             </div>
         </div>
     )
