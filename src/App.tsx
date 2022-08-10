@@ -16,7 +16,6 @@ const App = () => {
         startValue: 0
     }
     let [currentState, setCurrentState] = useState<StateType>(state)
-    let [disabledSetButton, setDisabledSetButton] = useState<boolean>(true)
     let [incorrectValue, setIncorrectValue] = useState<boolean>(false)
 
     return (
@@ -24,10 +23,11 @@ const App = () => {
             <div className="App">
                 <SettingsComponent state={currentState}
                                    dispatch={setCurrentState}
-                                   disabledButton={setDisabledSetButton}
-                                   disabledSetButton={disabledSetButton}
-                                   incorrectValue={setIncorrectValue}/>
-                <CounterComponent state={currentState} dispatch={setCurrentState} disabledButton={disabledSetButton} incorrectValue={incorrectValue}/>
+                                   incorrectValue={incorrectValue}
+                                   setIncorrectValue={setIncorrectValue}/>
+                <CounterComponent state={currentState}
+                                  dispatch={setCurrentState}
+                                  incorrectValue={incorrectValue}/>
             </div>
         </div>
     );
