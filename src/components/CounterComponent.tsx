@@ -10,6 +10,8 @@ type CounterComponentType = {
 
 const CounterComponent: React.FC<CounterComponentType> = (props) => {
 
+    console.log('rendered - CounterCopmonent')
+
     const incrementFunction = () => {
         let newState = {...props.state, currentValue: props.state.currentValue + 1}
         newState.currentValue <= props.state.maxValue && props.dispatch(newState)

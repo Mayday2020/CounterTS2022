@@ -10,45 +10,63 @@ type SettingsComponentType = {
 }
 
 const SettingsComponent: React.FC<SettingsComponentType> = (props) => {
+    console.log('rendered - settingsComponent')
 
     let [maxV, setMaxV] = useState(props.state.maxValue)
     let [startV, setStartV] = useState(props.state.startValue)
+    let [buttonState, setButtonState] = useState(true)
 
     const maxVFunction = (e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.currentTarget.value >= 1 && +e.currentTarget.value >= startV){
-            e.currentTarget.style.backgroundColor = '#FFFFFF'
-            setMaxV(+e.currentTarget.value)
+
+        console.log('rendered - maxVFunction')
+        setMaxV(+e.currentTarget.value)
+        if (maxV > 0 && maxV > startV) {
             props.setIncorrectValue(false)
+            setButtonState(false)
         } else {
-            e.currentTarget.style.backgroundColor = 'red'
-            setMaxV(+e.currentTarget.value)
             props.setIncorrectValue(true)
+            setButtonState(true)
         }
     }
 
     const startVFunction = (e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.currentTarget.value >= 0 && +e.currentTarget.value <= maxV) {
-            e.currentTarget.style.backgroundColor = '#FFFFFF'
-            setStartV(+e.currentTarget.value)
+        console.log('rendered - startVFunction')
+        setStartV(+e.currentTarget.value)
+        if (startV >= 0 && startV < maxV) {
             props.setIncorrectValue(false)
+            setButtonState(false)
         } else {
-            e.currentTarget.style.backgroundColor = 'red'
-            setStartV(+e.currentTarget.value)
             props.setIncorrectValue(true)
+            setButtonState(true)
         }
-
     }
 
     const setOptions = () => {
+
+        console.log('rendered - setOption')
         let newState = {currentValue: startV, maxValue: maxV, startValue: startV}
         props.dispatch(newState)
+        setButtonState(true)
+        localStorage.setItem('state', JSON.stringify(newState))
     }
 
     return (
         <div className={'panelBlock'}>
-            <div>max v: <input onChange={maxVFunction} className={'input'} type="number" value={maxV}/></div>
-            <div>start v: <input onChange={startVFunction} className={'input'} type="number" value={startV}/></div>
-            <Button buttonText={'set'} disabled={props.incorrectValue} onclick={setOptions}/>
+            <div>max v: <input style={maxV <= 0 || maxV <= startV ? {backgroundColor: 'red'} : {backgroundColor: 'white'}}
+                               onChange={maxVFunction}
+                               className={'input'}
+                               type="number"
+                               value={maxV}
+                />
+            </div>
+            <div>start v: <input style={startV < 0 || startV >= maxV ? {backgroundColor: 'red'} : {backgroundColor: 'white'}}
+                                 onChange={startVFunction}
+                                 className={'input'}
+                                 type="number"
+                                 value={startV}
+                />
+            </div>
+            <Button buttonText={'set'} disabled={props.incorrectValue || buttonState} onclick={setOptions}/>
         </div>
     )
 }
